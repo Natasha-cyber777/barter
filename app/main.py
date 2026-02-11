@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from app.api import users, auth, offers, transactions
+from app.api import listings, users, auth, offers, transactions
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 class Listing(BaseModel):
     title: str
@@ -18,9 +19,19 @@ def get_listings():
 @app.post("/listings")
 def create_listing(listing: Listing):
     return listing
+
 app.include_router(users.router)
 app.include_router(auth.router)
-app.include_router(users.router, prefix="/users", tags=["Users"])
-app.include_router(auth.router, prefix="/auth", tags=["Auth"])
-app.include_router(offers.router, prefix="/offers", tags=["Offers"])
-app.include_router(transactions.router, prefix="/transactions", tags=["Transactions"])
+app.include_router(listings.router)
+app.include_router(offers.router)
+app.include_router(transactions.router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # later restrict
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+@app.get("/health")
+def health():
+    return {"status": "ok"}
