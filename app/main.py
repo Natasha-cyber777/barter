@@ -35,3 +35,4 @@ app.add_middleware(
 @app.get("/health")
 def health():
     return {"status": "ok"}
+print("MAIN APP LOADED")
