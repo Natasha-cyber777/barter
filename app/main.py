@@ -2,7 +2,6 @@ print("MAIN APP LOADED")
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.api import listings, users, auth, offers, transactions
 
 app = FastAPI(
@@ -45,10 +44,3 @@ app.include_router(transactions.router)
 # CORS CONFIG
 # -----------------------
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # restrict later
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
