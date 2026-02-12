@@ -6,9 +6,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import listings, users, auth, offers, transactions
 
 app = FastAPI(
-    title="Bartr Backend",
+    
+    title="Barter Backend",
     version="1.0.0"
 )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or restrict to your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # -----------------------
 # BASIC SYSTEM ROUTES
