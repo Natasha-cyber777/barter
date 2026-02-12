@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.db.base import Base
 # Importing all models ensures they are all created in the DB at once
+from app.models.transaction import Transaction
 from app.models.user import User 
 from app.models.listing import Listing
 from app.models.message import Message
