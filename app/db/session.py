@@ -2,22 +2,28 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.db.base import Base
-# Importing all models ensures they are all created in the DB at once
+
+# Import models so tables get created
 from app.models.transaction import Transaction
-from app.models.user import User 
+from app.models.user import User
 from app.models.listing import Listing
 from app.models.message import Message
+from app.models.offer import Offer
+from dotenv import load_dotenv
+load_dotenv()
 
-# This looks for the 'DATABASE_URL' variable you saw in the Railway dashboard
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Fallback for local development (optional)
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+# ✅ Local fallback if not on Railway
+if not DATABASE_URL:
+    DATABASE_URL = "postgresql://postgres:password@localhost:5432/bartr"
+
+# ✅ Fix Railway old postgres:// format
+if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL)
 
-# Syncs your Python models with the PostgreSQL tables
 Base.metadata.create_all(bind=engine)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
